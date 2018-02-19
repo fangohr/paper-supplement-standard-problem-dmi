@@ -1,0 +1,109 @@
+# MIF 2.1 ---------------------------------------------------------------------
+
+set PI [expr {4 * atan(1.)}]
+set MU0 [expr {4 * $PI * 1e-7}]
+
+# -----------------------------------------------------------------------------
+
+set Ms [expr {3.84e5}]
+set A  [expr {8.78e-12}]
+set D  [expr {1.58e-3}]
+set BZ [expr {0.4}]
+
+# -----------------------------------------------------------------------------
+
+# BoxAtlas
+Specify Oxs_BoxAtlas:atlas {
+  xrange {0 183e-9}
+  yrange {0 183e-9}
+  zrange {0 22e-9}
+  name atlas
+}
+
+# RectangularMesh
+Specify Oxs_RectangularMesh:mesh {
+  cellsize {3e-9 3e-9 2e-9}
+  atlas Oxs_BoxAtlas:atlas
+}
+
+# UniformExchange
+Specify Oxs_UniformExchange [subst {
+  A $A
+}]
+
+# BulkDMI
+Specify Oxs_DMI_T [subst {
+  default_D $D
+  atlas :atlas
+  D {
+    atlas atlas $D
+  }
+}]
+
+Specify Oxs_FixedZeeman:Bfield [subst {
+  comment {Field values in Tesla; scale to A/m}
+  multiplier [expr {1 / $MU0}]
+  field {0.0 0.0 $BZ}
+}]
+
+# CGEvolver
+Specify Oxs_CGEvolve {}
+
+# MinDriver
+Specify Oxs_MinDriver [subst {
+  evolver Oxs_CGEvolve
+  stopping_mxHxm 0.001
+  mesh :mesh
+  Ms { Oxs_ScriptScalarField {
+     atlas :atlas
+     script { disk }
+     script_args { relpt }
+  }}
+  m0 { Oxs_ScriptVectorField {
+     atlas :atlas
+     script { BlochSk }
+     norm 1.0
+     script_args { relpt }
+  }}
+ 
+  basename oommf_3D_bulk_cylinder
+  scalar_field_output_format {text %\#.15g}
+  vector_field_output_format {text %\#.15g}
+  vector_field_output_meshtype irregular
+}]
+
+Destination table mmArchive
+Destination mags mmArchive
+
+Schedule DataTable table Stage 1
+Schedule Oxs_MinDriver::Magnetization mags Stage 1
+
+# =============================================================================
+
+proc BlochSk { x y z } {
+    global PI
+	set xnorm  [expr {(2 * $x - 1)}]
+	set ynorm  [expr {(2 * $y - 1)}]
+	set r [expr {sqrt($xnorm * $xnorm + $ynorm * $ynorm)}]
+    set phi [expr {atan2($ynorm, $xnorm) + 0.5 * $PI}]
+
+    set sk_diam [expr {0.3}]
+    set k [expr {$PI / $sk_diam}]
+
+    set mx [expr {sin($k * $r) * cos($phi)}]
+    set my [expr {sin($k * $r) * sin($phi)}]
+    set mz [expr {-cos($k * $r)}]
+
+	if {$r <= $sk_diam} { return [list $mx $my $mz]
+    } else {return [list 0 0 1]}
+}
+
+proc disk { x y z } {
+    global Ms
+	set xnorm  [expr {(2 * $x - 1)}]
+	set ynorm  [expr {(2 * $y - 1)}]
+	set radius [expr {sqrt($xnorm * $xnorm + $ynorm * $ynorm)}]
+
+	if {$radius <= 1} { return $Ms
+    } else {return 0}
+}

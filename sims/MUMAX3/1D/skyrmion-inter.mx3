@@ -1,0 +1,23 @@
+setgridsize(20, 1, 1)
+setcellsize(5e-09, 5e-09, 5e-9)
+SetMesh(20, 1, 1, 5e-09, 5e-09, 5e-9, 0, 0, 0)
+
+Msat         = 0.86e6
+Aex          = 13.0e-12
+Ku1          = 0.4e6
+anisU        = vector(0, 0, 1)
+Dind         = -3.0e-3
+NoDemagSpins = 1
+
+// Initial state
+m.setRegion(0, uniform(0, 0, 1))
+
+OutputFormat = OVF2_TEXT
+
+// Relax with specific torque:
+// alpha       = 0.9
+// RunWhile(MaxTorque > 1e-4)
+
+// Relax with conjugate gradient:
+minimize();
+SaveAs(m, "1D_Case-Inter")

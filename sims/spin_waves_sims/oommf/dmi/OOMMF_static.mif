@@ -1,0 +1,82 @@
+# MIF 2.1
+
+# -----------------------------------------------------------------------------
+
+set PI [expr {4 * atan(1.)}]
+set MU0 [expr {4 * $PI * 1e-7}]
+
+set LENGTH [expr {2000e-9}]
+set WIDTH [expr {200e-9}]
+set THICKNESS [expr {1e-9}]
+set DX [expr {2e-9}]
+set DY [expr {2e-9}]
+set DZ [expr {1e-9}]
+
+set Ms [expr {0.86e6}]
+set A [expr {13e-12}]
+Parameter D [expr {-3e-3}]
+
+set BIAS_FIELD [expr {0.4}]
+
+set ALPHA [expr {0.95}]
+set GAMMA [expr {2.21e5}]
+
+# -----------------------------------------------------------------------------
+
+Specify Oxs_BoxAtlas:Atlas [subst {
+    xrange {0e-9 $LENGTH}
+    yrange {0e-9 $WIDTH}
+    zrange {0e-9 $THICKNESS}
+    name world
+}]
+
+Specify Oxs_RectangularMesh:mesh [subst {
+  cellsize {$DX $DY $DZ}
+  atlas :Atlas
+}]
+
+Specify Oxs_UniformExchange [subst {
+  A  $A
+}]
+
+Specify Oxs_Demag {}
+
+# Uniform DMI is used here
+Specify Oxs_DMExchange6Ngbr:DMI [subst {
+    default_D $D
+    atlas :Atlas
+    D {
+        world world $D
+  }
+}]
+
+Specify Oxs_FixedZeeman:extfield0 [subst {
+  comment {Field values in Tesla; scale to A/m}
+  multiplier [expr {1 / $MU0}]
+  field {0.0 $BIAS_FIELD 0.0}
+}]
+
+Specify Oxs_RungeKuttaEvolve [subst {
+  do_precess 1
+  gamma_LL $GAMMA
+  alpha $ALPHA
+  method rk4
+}]
+
+Specify Oxs_TimeDriver [subst {
+ basename InitialMagnetisation
+ stopping_time 5e-9
+ stopping_dm_dt 0.1
+ evolver Oxs_RungeKuttaEvolve
+ vector_field_output_format "text %.17g"
+ mesh :mesh
+ stage_count 1
+ Ms $Ms
+ m0 { 0.1 0.9 0.0 }
+}]
+
+Destination table mmArchive
+Destination mags mmArchive
+
+Schedule DataTable table Step 10
+Schedule Oxs_TimeDriver::Magnetization mags Stage 1

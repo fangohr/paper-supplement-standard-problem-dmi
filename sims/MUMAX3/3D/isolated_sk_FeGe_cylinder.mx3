@@ -1,0 +1,41 @@
+nx := 62
+ny := 62
+nz := 12
+
+lx := 183e-9
+ly := 183e-9
+lz := 22e-9
+
+dx := lx / nx
+dy := ly / ny
+dz := lz / nz
+
+SetGridSize(nx, ny, nz)
+SetCellSize(dx, dy, dz)
+
+// Define the cylinder
+SetGeom(Circle(lx))
+
+Msat         = 0.384e6
+Aex          = 8.78e-12
+Dbulk        = 1.58e-3
+
+// External field in T
+Bz := 0.4
+B_ext = vector(0, 0, Bz)
+
+// No Demag
+NoDemagSpins = 1
+
+m = BlochSkyrmion(1, -1)
+
+OutputFormat = OVF2_TEXT
+
+// Relax with specific torque:
+// alpha       = 0.9
+// RunWhile(MaxTorque > 1e-3)
+
+// Relax with conjugate gradient:
+MinimizerStop = 1e-6
+minimize();
+SaveAs(m, "isolated_sk_FeGe_cylinder")

@@ -1,0 +1,24 @@
+figure.figsize : 8, 5
+
+font.size: 24
+xtick.labelsize : 22
+ytick.labelsize : 22
+legend.fontsize : 20
+axes.labelsize : 24
+axes.labelweight : 100
+axes.formatter.use_mathtext : True
+
+font.family : sans-serif
+font.sans-serif : Lato
+font.cursive : Lato
+font.weight : 100
+text.latex.unicode : True
+xtick.direction : out
+ytick.direction : out
+
+mathtext.fontset : custom
+mathtext.it : sans:italic
+mathtext.bf : sans:bold
+mathtext.sf : sans
+mathtext.default : it
+mathtext.rm : sans

@@ -1,0 +1,165 @@
+# MIF 2.2
+
+# -----------------------------------------------------------------------------
+
+set PI [expr {4 * atan(1.)}]
+set MU0 [expr {4 * $PI * 1e-7}]
+
+set LENGTH [expr {2000e-9}]
+set WIDTH [expr {200e-9}]
+set THICKNESS [expr {1e-9}]
+set DX [expr {2e-9}]
+set DY [expr {2e-9}]
+set DZ [expr {1e-9}]
+
+set Ms [expr {0.86e6}]
+set A [expr {13e-12}]
+Parameter D [expr {-3e-3}]
+
+set BIAS_FIELD [expr {0.4}]
+set EXCIT_FIELD [expr {0.04}]
+
+set ALPHA [expr {0.01}]
+set GAMMA [expr {2.21e5}]
+
+# Integration
+set TIME_STEP 1e-12
+set N_STAGES 4000
+
+# Initial state
+Parameter INIT_STATE InitialMagnetisation.omf
+
+# -----------------------------------------------------------------------------
+
+SetOptions {
+    basename "./omfs/SWDynamics"
+    vector_field_output_format "text %.17g"
+    vector_field_output_meshtype irregular
+    vector_field_output_format {text %.17g}
+}
+
+# Exponentially increasing damping at the edges along the x-axis.  Will
+# increase alpha from its starting value `alpha` to 1 in a region less than
+# `width` away from `xmin` or `xmax`, where `xmin` and `xmax` are the extremal
+# x-coordinates of the mesh.
+proc exponentialAlpha_y { alpha Xmin Xmax width x y z } {
+    set xn [expr {$x * 1e9}]
+    set yn [expr {$y * 1e9}]
+    set ya [expr {$Xmin + $width}]
+    set yb [expr {$Xmax - $width}]
+    
+
+    if {$xn <= $xa} {
+        set exp_alpha [expr {exp(($Xmin - $xn) * log($alpha) / ($Xmin - $xa))}]
+    } elseif {$xn >= $xb} {
+        set exp_alpha [expr {exp(($Xmax - $xn) * log($alpha) / ($Xmax - $xb))}]
+    } else {
+        set exp_alpha [expr {$alpha}]
+    }
+
+    return $exp_alpha
+}
+
+
+Specify Oxs_BoxAtlas:Atlas [subst {
+    xrange {0e-9 $LENGTH}
+    yrange {0e-9 $WIDTH}
+    zrange {0e-9 $THICKNESS}
+    name world
+}]
+
+Specify Oxs_RectangularMesh:mesh [subst {
+  cellsize {$DX $DY $DZ}
+  atlas :Atlas
+}]
+
+Specify Oxs_UniformExchange [subst {
+  A  $A
+}]
+
+Specify Oxs_Demag {}
+
+# Uniform DMI is used here
+Specify Oxs_DMExchange6Ngbr:DMI [subst {
+    default_D $D
+    atlas :Atlas
+    D {
+        world world $D
+  }
+}]
+
+# Time dependent excitation field ---------------------------------------------
+
+Specify Oxs_StageZeeman [subst {
+  script LocalFieldSpec
+  stage_count $N_STAGES
+}]
+
+proc LocalFieldSpec { stage } {
+  global TIME_STEP EXCIT_FIELD BIAS_FIELD MU0 PI 
+  set spec Oxs_ScriptVectorField
+  set time [expr {$stage * $TIME_STEP}]
+  set f [expr {60.0e9}]
+  set sinc_args [expr {2.0 * $PI * $f * ($time - 49.9999e-12)}]
+  set hField [expr {$EXCIT_FIELD / $MU0}]
+  set h_excit [expr {$hField * sin($sinc_args) / $sinc_args}]
+  set biasH [expr {$BIAS_FIELD / $MU0}]
+
+  lappend spec [subst {
+    atlas :Atlas
+    script {LocalField $biasH $h_excit}
+  }]
+
+  return $spec
+
+}
+
+proc LocalField { biasH h_excit xrel yrel zrel } {
+  global LENGTH WIDTH
+  set x [expr {$xrel * $LENGTH - $LENGTH * 0.5}]
+  set y [expr {$yrel * $WIDTH - $WIDTH * 0.5}]
+
+    if {($x <= 2e-9) & ($x >= -2e-9)} {
+        set sum [expr {$h_excit}]
+    } else {
+        set sum [expr {0}]
+    }
+    return [list $sum $biasH 0.0]
+}
+
+# -----------------------------------------------------------------------------
+
+# exponentialAlpha: alpha Ymin Ymax width (units in nm)
+Specify Oxs_ScriptScalarField:alpha [subst {
+   script_args { rawpt }
+   script {exponentialAlpha_y $ALPHA 0 [expr {$LENGTH * 1e9}] 20}
+   atlas :Atlas
+}]
+
+Specify Oxs_RungeKuttaEvolve [subst {
+  do_precess 1
+  gamma_LL $GAMMA
+  method rkf54
+  alpha $ALPHA
+}]
+
+# -----------------------------------------------------------------------------
+
+Specify Oxs_TimeDriver [subst {
+ evolver Oxs_RungeKuttaEvolve
+ mesh :mesh
+ stopping_time $TIME_STEP
+ stage_count $N_STAGES
+ Ms $Ms
+ m0 { Oxs_FileVectorField {
+   atlas :Atlas
+   norm  1
+   file $INIT_STATE
+} }
+}]
+
+Destination table mmArchive
+Destination mags mmArchive
+
+Schedule DataTable table Stage 1
+Schedule Oxs_TimeDriver::Magnetization mags Stage 1

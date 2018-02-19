@@ -1,0 +1,77 @@
+// Scale
+nm := 1e-9
+
+// Mesh -----------------------------------------------------------------------
+nx := 1000
+ny := 100
+nz := 1
+
+Lx :=         2000 * nm
+Ly :=         200  * nm
+thickness :=  1    * nm
+
+dx := Lx / nx
+dy := Ly / ny
+dz := thickness / nz
+
+SetGridSize(nx, ny, nz)
+SetCellSize(dx, dy, dz)
+// SetPBC(0, 0, 0);
+
+// Region for the application of the excitation field
+DefRegion(1, xrange(-2 * nm, 2 * nm))
+// DefRegion(2, yrange(-dy * 0.5, dy * 0.5))
+
+// Material -------------------------------------------------------------------
+
+Ms   := 0.86e6
+A    := 13e-12
+D    := -3e-3
+
+Msat  = Ms
+Aex   = A
+Dind  = D
+EnableDemag = true
+
+// External field in T
+By   := 0.4
+B_ext = vector(0, By, 0)
+
+// Initial state --------------------------------------------------------------
+m = uniform(0.1, 0.9, 0)
+
+// Data -----------------------------------------------------------------------
+// TableAddVar(Lx, "Lx", "nm")
+// TableAddVar(P_sk, "P_sk", "nm")
+// TableAddVar(Bz, "Bz", "T")
+// TableAdd(Edens_Zeeman)
+// TableAdd(Edens_exch)
+// TableAdd(Edens_demag)
+// TableAdd(Edens_total)
+
+// Minimisation ---------------------------------------------------------------
+OutputFormat = OVF1_TEXT
+MinimizerStop = 1e-6
+
+// Now relax with conjugate gradient:
+minimize();
+SaveAs(CropY(m, ny / 2 - 1, ny / 2), "InitialState")
+print("Minimized!")
+print(Ly * 0.5 - dy * 0.5)
+print(Ly * 0.5 + dy * 0.5)
+
+// Dynamics -------------------------------------------------------------------
+fc := 60e9
+t0 := 49.99 * 1e-12
+h0 := 0.04
+
+// Excitation field
+B_ext.setRegion(0, vector(0, By, 0))
+B_ext.setRegion(1, vector(h0 * sin(2 * pi * fc * (t - t0)) / (2 * pi * fc * (t - t0)),
+						  By, 0))
+
+alpha = 0.01
+autosave(CropY(m, ny / 2 - 1, ny / 2), 1e-12)
+// MaxDt = 1e-12
+FixDt = 1e-13
+Run(4e-9)

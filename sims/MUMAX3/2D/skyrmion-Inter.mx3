@@ -1,0 +1,39 @@
+// Disk radius
+R  := 50e-9
+
+// Number of cells
+nx := 50
+ny := 50
+nz := 1
+
+// Mesh discretisation
+dx := 2e-9
+dy := 2e-9
+dz := 2e-9
+
+// Set mesh and disk geometry
+SetGridSize(nx, ny, nz)
+SetCellSize(dx, dy, dz)
+SetGeom(Circle(2 * R))
+DefRegion(1, circle(R / 2))
+
+Msat        = 860e3
+Aex         = 13e-12
+Ku1         = 0.4e6
+anisU       = vector(0, 0, 1)
+Dind        = -3e-3
+// No Demag:
+NoDemagSpins = 1
+
+// Initial state
+m.setRegion(0, uniform(0, 0, -1))
+m.setRegion(1, uniform(0, 0, 1))
+
+
+OutputFormat = OVF2_TEXT
+
+// alpha       = 0.3
+// relax()
+minimize()
+SaveAs(m, "Skyrmion-Inter")
+Snapshot(m)
