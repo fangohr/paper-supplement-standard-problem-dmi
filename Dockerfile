@@ -45,14 +45,14 @@ RUN echo "tclsh /usr/local/oommf/oommf.tcl \"\$@\"" >> oommf
 RUN chmod a+x oommf
 
 # Install JOOMMF
-RUN pip3 install oommfc -U
-RUN pip3 install oommfodt -U
+RUN pip3 install git+https://github.com/davidcortesortuno/oommfc.git -U
+RUN pip3 install git+https://github.com/davidcortesortuno/oommfodt.git -U
 
 # Headless Matplotlib:
 ENV MPLBACKEND=Agg
 
 # Set threads for OpenMP:
-# ENV OMP_NUM_THREADS=2
+ENV OMP_NUM_THREADS=2
 # WORKDIR /io
 
 # User to make Binder happy
@@ -71,13 +71,5 @@ USER root
 RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
 
-# Set up user so that we do not run as root
-# (not necessary if we run docker with --user)
-# -s for shell, -m to create home directory, -G groups
-#
-# RUN useradd -m -s /bin/bash -G sudo fidimag && \
-#     echo "fidimag:docker" | chpasswd && \
-#     echo "fidimag ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
-# # -R recursive
-# RUN chown -R fidimag:fidimag /usr/local/fidimag
-
+# Set the working directory
+WORKDIR /home/${USER}
