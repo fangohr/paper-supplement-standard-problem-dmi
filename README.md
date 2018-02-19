@@ -14,11 +14,15 @@ with a material based on Permalloy (Py):
 
 ## One-dimensional problem
 
-A 100 nm  x 5 nm x 5 nm wide wire made of a Py-like material
+A 100 nm  x 5 nm x 5 nm wire made of a Py-like material
 
-## Two-dimensionale problem
+![](notebooks/mayavi/one-dim.png)
+
+## Two-dimensional problem
 
 A 100 nm wide and 2 nm thick disk made of a Py-like material
+
+![](notebooks/mayavi/system_2d.png)
 
 ## Three-dimensional problem
 
