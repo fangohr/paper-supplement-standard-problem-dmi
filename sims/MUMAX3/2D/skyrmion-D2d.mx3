@@ -21,7 +21,7 @@ Msat        = 860e3
 Aex         = 13e-12
 Ku1         = 0.4e6
 anisU       = vector(0, 0, 1)
-D_D2d       = -3e-3
+D_D2d       = 3e-3
 // No Demag:
 NoDemagSpins = 1
 

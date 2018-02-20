@@ -12,7 +12,7 @@
 // Crystal Symmetry D_2d
 // Energy:
 //
-// 	E  = D (L_zx(y) + L_zy(x))
+// 	E  = D (L_xz(y) + L_yz(x))
 //
 // Effective field:
 //
@@ -23,12 +23,12 @@
 // Boundary conditions:
 //
 // 	        2A dxMx = 0
-// 	 D Mz + 2A dxMy = 0
-// 	-D My + 2A dxMz = 0
+// 	-D Mz + 2A dxMy = 0
+// 	 D My + 2A dxMz = 0
 //
-// 	 D Mz + 2A dyMx = 0
+// 	-D Mz + 2A dyMx = 0
 // 	        2A dyMy = 0
-// 	-D Mx + 2A dyMz = 0
+// 	 D Mx + 2A dyMz = 0
 //
 // 	        2A dzMx = 0
 // 	        2A dzMy = 0
@@ -74,12 +74,12 @@ adddmid2d(float* __restrict__ Hx, float* __restrict__ Hy, float* __restrict__ Hz
         float D_2A = D/(2.0f*A);
         if (is0(m1)) {                                 // neighbor missing
             m1.x = m0.x;
-            m1.y = m0.y - (-cx * D_2A * m0.z);
-            m1.z = m0.z + (-cx * D_2A * m0.y);
+            m1.y = m0.y + (-cx * D_2A * m0.z);
+            m1.z = m0.z - (-cx * D_2A * m0.y);
         }
         h   += (2.0f*A/(cx*cx)) * (m1 - m0);          // exchange
-        h.y += (D/cx)*(-m1.z);
-        h.z -= (D/cx)*(-m1.y);
+        h.y += (D/cx)*(m1.z);
+        h.z -= (D/cx)*(m1.y);
     }
 
 
@@ -95,12 +95,12 @@ adddmid2d(float* __restrict__ Hx, float* __restrict__ Hy, float* __restrict__ Hz
         float D_2A = D/(2.0f*A);
         if (is0(m2)) {
             m2.x = m0.x;
-            m2.y = m0.y - (+cx * D_2A * m0.z);
-            m2.z = m0.z + (+cx * D_2A * m0.y);
+            m2.y = m0.y + (+cx * D_2A * m0.z);
+            m2.z = m0.z - (+cx * D_2A * m0.y);
         }
         h   += (2.0f*A/(cx*cx)) * (m2 - m0);
-        h.y += (D/cx)*(m2.z);
-        h.z -= (D/cx)*(m2.y);
+        h.y += (D/cx)*(-m2.z);
+        h.z -= (D/cx)*(-m2.y);
     }
 
     // y derivatives (along height)
@@ -115,13 +115,13 @@ adddmid2d(float* __restrict__ Hx, float* __restrict__ Hy, float* __restrict__ Hz
         float D = DLUT2d[symidx(r0, r1)];
         float D_2A = D/(2.0f*A);
         if (is0(m1)) {
-            m1.x = m0.x - (-cy * D_2A * m0.z);
+            m1.x = m0.x + (-cy * D_2A * m0.z);
             m1.y = m0.y;
-            m1.z = m0.z + (-cy * D_2A * m0.x);
+            m1.z = m0.z - (-cy * D_2A * m0.x);
         }
         h   += (2.0f*A/(cy*cy)) * (m1 - m0);
-        h.x += (D/cy)*(-m1.z);
-        h.z -= (D/cy)*(-m1.x);
+        h.x += (D/cy)*(m1.z);
+        h.z -= (D/cy)*(m1.x);
     }
 
     {
@@ -135,13 +135,13 @@ adddmid2d(float* __restrict__ Hx, float* __restrict__ Hy, float* __restrict__ Hz
         float D = DLUT2d[symidx(r0, r1)];
         float D_2A = D/(2.0f*A);
         if (is0(m2)) {
-            m2.x = m0.x - (+cy * D_2A * m0.z);
+            m2.x = m0.x + (+cy * D_2A * m0.z);
             m2.y = m0.y;
-            m2.z = m0.z + (+cy * D_2A * m0.x);
+            m2.z = m0.z - (+cy * D_2A * m0.x);
         }
         h   += (2.0f*A/(cy*cy)) * (m2 - m0);
-        h.x += (D/cy)*(m2.z);
-        h.z -= (D/cy)*(m2.x);
+        h.x += (D/cy)*(-m2.z);
+        h.z -= (D/cy)*(-m2.x);
     }
 
     // only take vertical derivative for 3D sim
