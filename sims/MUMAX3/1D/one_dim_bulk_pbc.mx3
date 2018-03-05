@@ -1,6 +1,4 @@
-setgridsize(20, 1, 1)
-setcellsize(5e-09, 5e-09, 5e-9)
-SetMesh(20, 1, 1, 5e-09, 5e-09, 5e-9, 0, 0, 0)
+SetMesh(100, 1, 1, 1e-09, 1e-09, 1e-9, 0, 0, 0)
 
 Msat         = 0.86e6
 Aex          = 13.0e-12
