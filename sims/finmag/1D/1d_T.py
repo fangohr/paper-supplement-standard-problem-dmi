@@ -19,7 +19,7 @@ from finmag.util.meshes import line_mesh
 
 # MESH ------------------------------------------------------------------------
 
-mesh = line_mesh(np.linspace(0, 100, 21))
+mesh = line_mesh(np.linspace(0, 100, 101))
 
 
 # Simulation and energies -----------------------------------------------------
