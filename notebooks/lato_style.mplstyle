@@ -6,6 +6,8 @@ ytick.labelsize : 22
 legend.fontsize : 20
 axes.labelsize : 24
 axes.labelweight : 100
+axes.titleweight : 100
+axes.titlesize : 22
 axes.formatter.use_mathtext : True
 
 font.family : sans-serif

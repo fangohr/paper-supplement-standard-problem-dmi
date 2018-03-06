@@ -7,6 +7,9 @@ anisU        = vector(0, 0, 1)
 Dbulk        = 3.0e-3
 NoDemagSpins = 1
 
+// PBCs in the y-direction
+SetPBC(0, 1, 0)
+
 // Initial state
 m.setRegion(0, uniform(0, 0, 1))
 
@@ -18,4 +21,4 @@ OutputFormat = OVF2_TEXT
 
 // Relax with conjugate gradient:
 minimize();
-SaveAs(m, "one_dim_bulk")
+SaveAs(m, "one_dim_bulk_pbc")

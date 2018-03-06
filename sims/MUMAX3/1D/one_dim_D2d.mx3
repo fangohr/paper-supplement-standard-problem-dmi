@@ -4,7 +4,7 @@ Msat         = 0.86e6
 Aex          = 13.0e-12
 Ku1          = 0.4e6
 anisU        = vector(0, 0, 1)
-Dbulk        = 3.0e-3
+D_D2d        = 3.0e-3
 NoDemagSpins = 1
 
 // Initial state
@@ -18,4 +18,4 @@ OutputFormat = OVF2_TEXT
 
 // Relax with conjugate gradient:
 minimize();
-SaveAs(m, "one_dim_bulk")
+SaveAs(m, "one_dim_D2d")
