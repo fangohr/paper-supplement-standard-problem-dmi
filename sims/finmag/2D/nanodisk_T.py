@@ -8,29 +8,17 @@ from finmag.util.consts import mu0
 import os, shutil
 import dolfin as df
 
-# Info
-# from finmag.util.helpers import set_logging_level
-# set_logging_level("INFO")
-# set_logging_level("DEBUG")
-
 # Geometries
+import mshr
 from finmag.util.mesh_templates import Nanodisk
 
 
 # MESH ------------------------------------------------------------------------
 
 mesh_file = 'mesh/nanodisk.xml.gz'
-if os.path.exists(mesh_file):
-    mesh = df.Mesh(mesh_file)
-else:
-    mesh = Nanodisk(d=100, h=2,
-                    center=(0, 0, 0),
-                    valign='bottom',
-                    name='nanodisk'
-                    ).create_mesh(maxh=2,
-                                  save_result=True,
-                                  filename='nanodisk', directory='mesh',
-                                  )
+mesh = mshr.Circle(df.Point(0, 0), 50)
+mesh = mshr.generate_mesh(mesh, 40)
+mesh = df.Mesh(mesh)
 
 
 # Simulation and energies -----------------------------------------------------
@@ -64,7 +52,7 @@ sim.add(UniaxialAnisotropy(Ku, (0, 0, 1), name='Ku'))
 
 # -----------------------------------------------------------------------------
 
-sim.set_tol(1e-8, 1e-8)
+# sim.set_tol(1e-8, 1e-8)
 sim.llg.presession = False
 sim.alpha = 0.9
 
@@ -77,18 +65,18 @@ sim.save_vtk(filename='vtks/nanodisk_T.pvd', overwrite=True)
 sim.save_field('m', 'nanodisk_T.npy', overwrite=True)
 
 # Extract data
-r_diam = np.linspace(-49.99, 49.99, 100)
+r_diam = np.linspace(-49.9, 49.9, 100)
 data = np.zeros((len(r_diam), 4))
 
 for i, r in enumerate(r_diam):
     data[i][0] = r
-    data[i][1:] = sim.m_field.f((r, 0, 1))
+    data[i][1:] = sim.m_field.f((r, 0))
 
 np.savetxt('nanodisk_T_skyrmion.dat', data)
 
 # Skyrmion radius
 import scipy.optimize
-r_sk = scipy.optimize.brentq(lambda r: sim.m_field.f((r, 0, 1))[2], 0, 49)
+r_sk = scipy.optimize.brentq(lambda r: sim.m_field.f((r, 0))[2], 0, 49)
 print(r_sk)
 
 # Extract the radial component at r=r_sk
@@ -98,11 +86,11 @@ for i, phi in enumerate(phi_ring):
     x = r_sk * np.cos(phi)
     y = r_sk * np.sin(phi)
 
-    mx, my, mz = sim.m_field.f((x, y, 1))
+    mx, my, mz = sim.m_field.f((x, y))
 
     mr = mx * np.cos(phi) + my * np.sin(phi)
 
     data_mr[i][0] = phi
     data_mr[i][1] = mr
 
-np.savetxt('nanodisk_T_phi_mr_rsk.dat', data)
+np.savetxt('nanodisk_T_phi_mr_rsk.dat', data_mr)
