@@ -33,7 +33,7 @@ Specify Oxs_UniformExchange [subst {
 }]
 
 # BulkDMI
-Specify Oxs_BulkDMI [subst {
+Specify Oxs_DMI_T [subst {
   default_D $D
   atlas :atlas
   D {
