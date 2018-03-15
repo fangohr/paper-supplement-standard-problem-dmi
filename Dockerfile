@@ -18,7 +18,7 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 # Next line for codecov target
 RUN apt install -y curl git
 
-RUN pip3 install ipywidgets nbval numpy scipy matplotlib notebook psutil pytest -U
+RUN pip3 install ipywidgets nbval numpy scipy matplotlib notebook psutil pytest pytest-cov -U
 # RUN pip3 install --upgrade setuptools==20.4
 
 # Headless Matplotlib:
