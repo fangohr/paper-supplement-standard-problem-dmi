@@ -74,4 +74,21 @@ to run Fidimag and OOMMF simulations at the moment.
 
 # Citation
 
-To cite this paper refer to
+To cite this repository refer to:
+
+```
+@misc{Cortes2018,
+  author       = {David Cortés-Ortuño and Marijan Beg and Vanessa Nehruji and
+                  Leoni Breth and Ryan Pepper and Thomas Kluyver and
+                  Gary Downing and Thorsten Hesjedal and Peter Hatton and 
+                  Tom Lancaster and Riccardo Hertel and Geetha Balakrishnan and
+                  Ondrej Hovorka and Hans Fangohr},
+  title        = {Data set for: Proposal for a micromagnetic standard problem 
+                  for materials with Dzyaloshinskii-Moriya interaction},
+  month        = apr,
+  year         = 2018,
+  doi          = {10.5281/zenodo.1174311},
+  url          = {http://dx.doi.org/10.5281/zenodo.1174311}
+}
+```
+
