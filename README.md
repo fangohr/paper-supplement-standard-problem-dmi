@@ -65,6 +65,17 @@ corresponding notebook with the analysis of the data of the dynamics problem.
 Tools to process the data from spin wave simulations can be found in the
 `sims/spin_waves_sims/data_libs/` folder.
 
+Finite element calculation results can be found in the notebooks whose names
+finish with `finite-element`. These results were obtained with non-publicly
+available finite element codes, thus they are mostly for reference, but
+simulation scripts for one of the finite element packages are hosted in the
+`sims/finmag/` directory.
+
+# Data
+
+Data to reproduce the plots in the paper, without running the notebooks, are
+provided as text files in the `notebooks/data` directory. 
+
 # Binder
 
 It is possible to interactively run the simulations and analyse the data from a
