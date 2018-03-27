@@ -48,10 +48,11 @@ RUN apt install -y git tk-dev tcl-dev wget
 
 # Compile oommf 2.0a and create OOMMFTCL environment variable
 WORKDIR /usr/local
-RUN git clone https://github.com/davidcortesortuno/oommf.git
-RUN mv oommf oommf_TMP && mv oommf_TMP/oommf oommf && rm -rf oommf_TMP 
+RUN git clone https://github.com/fangohr/oommf
 WORKDIR /usr/local/oommf
-RUN ./oommf.tcl pimake
+RUN make build-with-dmi-extension-all
+WORKDIR /usr/local
+RUN mv oommf oommf_TMP && mv oommf_TMP/oommf oommf && rm -rf oommf_TMP 
 ENV OOMMFTCL /usr/local/oommf/oommf.tcl
 
 # Create executable oommf script
@@ -64,8 +65,12 @@ RUN chmod a+x oommf
 
 # Install JOOMMF
 
-RUN pip3 install git+https://github.com/davidcortesortuno/oommfodt.git
-RUN pip3 install git+https://github.com/davidcortesortuno/oommfc.git
+RUN python3 -m pip install --upgrade \
+    git+git://github.com/joommf/joommfutil.git \
+    git+git://github.com/joommf/discretisedfield.git \
+    git+git://github.com/joommf/micromagneticmodel.git \
+    git+git://github.com/joommf/oommfodt.git \
+    git+git://github.com/joommf/oommfc.git
 
 # -----------------------------------------------------------------------------
 
@@ -91,6 +96,6 @@ RUN chown -R ${NB_UID} ${HOME}
 USER ${NB_USER}
 
 # Set the working directory
-WORKDIR /home/${USER}
+WORKDIR /home/${USER}/micromag/notebooks
 
 # -----------------------------------------------------------------------------
