@@ -5,6 +5,8 @@ docker:
 	docker run -ti -d --name stdprob stdprob
 
 travis:
+	docker build -t stdprob -f ./Dockerfile .
+	docker run -ti -d --name stdprob stdprob
 	# Mount (-v volume) the current directory in /home/data in the container
 	docker run -v `pwd`:/home/data stdprob bash -c "cd data && make test-ipynb"
 
