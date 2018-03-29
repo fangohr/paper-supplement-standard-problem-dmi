@@ -53,7 +53,7 @@ Dzyaloshinkii-Moriya interactions.
 In the `notebooks` folder there is a notebook for every standard problem.
 [Fidimag](http://computationalmodelling.github.io/fidimag/) and [OOMMF](https://math.nist.gov/oommf/) simulations can be run directly from the notebooks.  
 
-[MuMax3](https://github.com/mumax/3) simulations can be run from the `Makefile` in the [`sims/MUMAX3/`](https://github.com/fangohr/paper-supplement-standard-problem-dmi/tree/master/sims/MUMAX3) folder,
+[MuMax3](http://mumax.github.io/) simulations can be run from the `Makefile` in the [`sims/MUMAX3/`](https://github.com/fangohr/paper-supplement-standard-problem-dmi/tree/master/sims/MUMAX3) folder,
 which automatically converts `OVF` files into readable formats to analyse the
 data in the notebooks. These simulations are in a separate folder since
 MuMax3 requires a proper installation with a working NVidia graphics card.
@@ -79,7 +79,7 @@ For the OOMMF code we simulate different DMI classes using these modules, which 
 2. T(O) - bulk DMI ([repository](https://github.com/joommf/oommf-extension-dmi-t)), and
 3. D<sub>2d</sub> - antiskyrmion DMI ([repository](https://github.com/joommf/oommf-extension-dmi-d2d))
 
-For the [MuMax3](https://github.com/mumax/3) code, we simulate D<sub>2d</sub> DMI from a new module hosted in this repository, in the [`sims/MUMAX3/src_files`](https://github.com/fangohr/paper-supplement-standard-problem-dmi/tree/master/sims/MUMAX3/src_files) folder. These can be installed by copying the files in the corresponding directories of the MuMax3 source code and re-compiling it.
+For the [MuMax3](http://mumax.github.io/) code, we simulate D<sub>2d</sub> DMI from a new module hosted in this repository, in the [`sims/MUMAX3/src_files`](https://github.com/fangohr/paper-supplement-standard-problem-dmi/tree/master/sims/MUMAX3/src_files) folder. These can be installed by copying the files in the corresponding directories of the MuMax3 source code and re-compiling it.
 
 # Data
 
