@@ -1,5 +1,5 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1174311.svg)](https://doi.org/10.5281/zenodo.1174311)
-
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/fangohr/paper-supplement-standard-problem-dmi/master)
 
 # paper-supplement-standard-problem-dmi
 
