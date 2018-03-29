@@ -43,7 +43,7 @@ Material parameters are
 
 ## Dynamics problem
 
-Calculation of the spin wave-spectrum of a Py-like thin film with
+Calculation of the spin wave-spectrum of a permalloy-like thin film with
 Dzyaloshinkii-Moriya interactions.
 
 ![](notebooks/mayavi/sws/sws.png)
@@ -53,28 +53,38 @@ Dzyaloshinkii-Moriya interactions.
 In the `notebooks` folder there is a notebook for every standard problem.
 Fidimag and OOMMF simulations can be run directly from the notebooks.  
 
-MuMax3 simulations can be run from the `Makefile` in the `sims/MUMAX3/` folder,
+MuMax3 simulations can be run from the `Makefile` in the [`sims/MUMAX3/`](https://github.com/fangohr/paper-supplement-standard-problem-dmi/tree/master/sims/MUMAX3) folder,
 which automatically converts `OVF` files into readable formats to analyse the
 data in the notebooks. These simulations are in a separate folder since
 MuMax3 requires a proper installation with a working NVidia graphics card.
 
 Simulations for the calculation of spin wave spectra are computationally
 intensive, thus they can be run separately from the scripts and `Makefile`s in
-the `sims/spin_waves_sims/` folder. Some of these scripts are called from the
+the [`sims/spin_waves_sims/`](https://github.com/fangohr/paper-supplement-standard-problem-dmi/tree/master/sims/spin_waves_sims/) folder. Some of these scripts are called from the
 corresponding notebook with the analysis of the data of the dynamics problem.
 Tools to process the data from spin wave simulations can be found in the
-`sims/spin_waves_sims/data_libs/` folder.
+[`sims/spin_waves_sims/data_libs/`](https://github.com/fangohr/paper-supplement-standard-problem-dmi/tree/master/sims/spin_waves_sims/data_libs) folder.
 
 Finite element calculation results can be found in the notebooks whose names
 finish with `finite-element`. These results were obtained with non-publicly
 available finite element codes, thus they are mostly for reference, but
 simulation scripts for one of the finite element packages are hosted in the
-`sims/finmag/` directory.
+[`sims/finmag/`](https://github.com/fangohr/paper-supplement-standard-problem-dmi/tree/master/sims/finmag) directory.
+
+# Extensions
+
+For the OOMMF code we simulate different DMI classes using these modules, which can be installed in OOMMF's source code separately:
+
+1. C<sub>nv</sub> - interfacial DMI ([repository](https://github.com/joommf/oommf-extension-dmi-cnv)),
+2. T(O) - bulk DMI ([repository](https://github.com/joommf/oommf-extension-dmi-t)), and
+3. D<sub>2d</sub> - antiskyrmion DMI ([repository](https://github.com/joommf/oommf-extension-dmi-d2d))
+
+For the MuMax3 code, we simulate D<sub>2d</sub> DMI from a new module hosted in this repository, in the [`sims/MUMAX3/src_files`](https://github.com/fangohr/paper-supplement-standard-problem-dmi/tree/master/sims/MUMAX3/src_files) folder. These can be installed by copying the files in the corresponding directories of the MuMax3 source code and re-compiling it.
 
 # Data
 
 Data to reproduce the plots in the paper, without running the notebooks, are
-provided as text files in the `notebooks/data` directory. 
+provided as text files in the [`notebooks/data`](https://github.com/fangohr/paper-supplement-standard-problem-dmi/tree/master/notebooks/data) directory. 
 
 # Binder
 
