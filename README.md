@@ -1,11 +1,13 @@
 # paper-supplement-standard-problem-dmi
 
-Electronic and additional information for manuscript on micromagnetic standard
-problem DMI
+Electronic and additional information for the manuscript: *Proposal for a 
+micromagnetic standard problem for materials with Dzyaloshinskii-Moriya 
+interaction*
 
-Authors: D. Cortés-Ortuño, M. Beg, V. Nehruji, L. Breth, R. Pepper, T. Kluyver,
-G. Downing, T. Hesjedal, P. Hatton, T. Lancaster, R. Hertel, G.  Balakrishnan,
-O. Hovorka and H. Fangohr
+Authors: [D. Cortés-Ortuño](https://github.com/davidcortesortuno),
+M. Beg, V. Nehruji, L. Breth, R. Pepper, T. Kluyver, G. Downing, 
+T. Hesjedal, P. Hatton, T. Lancaster, R. Hertel, O. Hovorka and 
+H. Fangohr
 
 This repository contains scripts and notebooks to reproduce the four standard
 problems specified in the paper. The majority of the problems are specified
@@ -14,11 +16,13 @@ with a material based on Permalloy (Py):
     D     :: 3     mJ m^-2  
     A     :: 13    pJ m^-1  
     Ms    :: 0.86  MA m^-1  
-    Ku    :: 0.4   MJ m^-3   
+    Ku    :: 0.4   MJ m^-3
+    
+Simulations are based on the micromagnetic packages [Fidimag](http://computationalmodelling.github.io/fidimag/), [OOMMF](https://math.nist.gov/oommf/) and [MuMax3](http://mumax.github.io/).  
 
 ## One-dimensional problem
 
-A 100 nm  x 5 nm x 5 nm wire made of a Py-like material
+A 100 nm  x 1 nm x 1 nm wire made of a Py-like material
 
 ![](notebooks/mayavi/one-dim.png)
 
