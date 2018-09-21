@@ -14,15 +14,15 @@ set BZ [expr {0.4}]
 
 # BoxAtlas
 Specify Oxs_BoxAtlas:atlas {
-  xrange {0 183e-9}
-  yrange {0 183e-9}
-  zrange {0 22e-9}
+  xrange {0 180e-9}
+  yrange {0 180e-9}
+  zrange {0 20e-9}
   name atlas
 }
 
 # RectangularMesh
 Specify Oxs_RectangularMesh:mesh {
-  cellsize {3e-9 3e-9 2e-9}
+  cellsize {1.5e-9 1.5e-9 1e-9}
   atlas Oxs_BoxAtlas:atlas
 }
 
