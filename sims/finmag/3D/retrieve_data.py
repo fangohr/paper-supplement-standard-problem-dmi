@@ -34,7 +34,7 @@ sim.set_m(np.load('m_relaxed.npy'))
 # Skyrmion radius vs z
 
 sk_radius = {}
-for i, z in enumerate(np.linspace(0, 20, 11)):
+for i, z in enumerate(np.linspace(0, 21, 11)):
     # Skyrmion radius: m_z = 0
     rsk = scipy.optimize.brentq(lambda x: sim.m_field.f((x, 0, z))[2], 0, 50)
     sk_radius[z] = rsk
@@ -45,8 +45,8 @@ for i, z in enumerate(np.linspace(0, 20, 11)):
 
 data = {}
 
-xs = np.linspace(0, 89.9, 100)
-zs = [0, 10., 20.]
+xs = np.linspace(0, 91.49, 100)
+zs = [0, 10.5, 20.99]
 for j, z_layer in enumerate(['bottom', 'center', 'top']):
     data[z_layer] = np.zeros((len(xs), 8))
     for i, x in enumerate(xs):
@@ -66,9 +66,9 @@ for j, z_layer in enumerate(['bottom', 'center', 'top']):
 # Extract m components across the thickness
 
 data_acrossz = {}
-zs = np.linspace(0, 20, 11)
+zs = np.linspace(0, 20.99, 11)
 for j, x_pos in enumerate(['center', 'sk_rad', 'boundary']):
-    xs = [0, sk_radius[0], 89.9]
+    xs = [0, sk_radius[0], 91.49]
     data_acrossz[x_pos] = np.zeros((len(zs), 8))
     for i, z in enumerate(zs):
 

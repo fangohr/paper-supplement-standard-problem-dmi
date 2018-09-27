@@ -22,11 +22,11 @@ mesh_file = 'mesh/nanocylinder.xml.gz'
 if os.path.exists(mesh_file):
     mesh = df.Mesh(mesh_file)
 else:
-    mesh = Nanodisk(d=180, h=20,
+    mesh = Nanodisk(d=183, h=21,
                     center=(0, 0, 0),
                     valign='bottom',
                     name='nano_cylinder'
-                    ).create_mesh(maxh=3,
+                    ).create_mesh(maxh=2,
                                   save_result=True,
                                   filename='nanocylinder', directory='mesh',
                                   )
