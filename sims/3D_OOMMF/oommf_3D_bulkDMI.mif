@@ -7,22 +7,22 @@ set MU0 [expr {4 * $PI * 1e-7}]
 
 set Ms [expr {3.84e5}]
 set A  [expr {8.78e-12}]
-set D  [expr {-1.58e-3}]
+set D  [expr {1.58e-3}]
 set BZ [expr {0.4}]
 
 # -----------------------------------------------------------------------------
 
 # BoxAtlas
 Specify Oxs_BoxAtlas:atlas {
-  xrange {0 180e-9}
-  yrange {0 180e-9}
-  zrange {0 20e-9}
+  xrange {0 183e-9}
+  yrange {0 183e-9}
+  zrange {0 21e-9}
   name atlas
 }
 
 # RectangularMesh
 Specify Oxs_PeriodicRectangularMesh:mesh {
-  cellsize {1.5e-9 1.5e-9 1e-9}
+  cellsize {1e-9 1e-9 1e-9}
   atlas Oxs_BoxAtlas:atlas
   periodic "xy"
 }
