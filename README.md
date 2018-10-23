@@ -15,7 +15,7 @@ H. Fangohr
 
 This repository contains scripts and notebooks to reproduce the four standard
 problems specified in the paper. The majority of the problems are specified
-with a material based on Permalloy (Py):
+with an artificial ferromagnetic material:
 
     D     :: 3     mJ m^-2  
     A     :: 13    pJ m^-1  
