@@ -38,7 +38,7 @@ A 100 nm wide and 2 nm thick disk made of a Py-like material
 
 ## Three-dimensional problem
 
-A 180 nm wide and 20 nm thick FeGe cylinder under an applied field `B`
+A 183 nm wide and 21 nm thick FeGe cylinder under an applied field `B`
 
 ![](notebooks/mayavi/system_3d_cylinder.png)
 
