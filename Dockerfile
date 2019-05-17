@@ -6,6 +6,9 @@ FROM ubuntu:18.04
 # ENTRYPOINT ["/bin/bash"]  
 # SHELL ["/bin/bash", "-c"] 
 
+# Avoid user interaction dialog
+ENV DEBIAN_FRONTEND=noninteractive
+
 # We need cython3 from the ubuntu repos, since cython-ising Sundials fail
 # with pip cython
 RUN apt update -y
