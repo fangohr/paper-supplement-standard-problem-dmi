@@ -9,6 +9,8 @@ FROM ubuntu:18.04
 # Avoid user interaction dialog
 ENV DEBIAN_FRONTEND=noninteractive
 
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
+
 # We need cython3 from the ubuntu repos, since cython-ising Sundials fail
 # with pip cython
 RUN apt update -y
