@@ -1,10 +1,15 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 # -----------------------------------------------------------------------------
 # LIBRARIES
 
 # ENTRYPOINT ["/bin/bash"]  
 # SHELL ["/bin/bash", "-c"] 
+
+# Avoid user interaction dialog
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y --no-install-recommends apt-utils
 
 # We need cython3 from the ubuntu repos, since cython-ising Sundials fail
 # with pip cython
@@ -18,7 +23,7 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 # Next line for codecov target
 RUN apt install -y curl git
 
-RUN pip3 install ipywidgets nbval numpy scipy matplotlib notebook psutil pytest pytest-cov -U
+RUN pip3 install ipywidgets nbval numpy scipy matplotlib==2.2.2 notebook psutil pytest pytest-cov -U
 # RUN pip3 install --upgrade setuptools==20.4
 
 # Headless Matplotlib:
@@ -50,6 +55,8 @@ RUN apt install -y git tk-dev tcl-dev wget
 WORKDIR /usr/local
 RUN git clone https://github.com/fangohr/oommf
 WORKDIR /usr/local/oommf
+# Use specific 2.0a version
+RUN git checkout tags/2.0a0_20170929a0
 RUN make build-with-dmi-extension-all
 WORKDIR /usr/local
 RUN mv oommf oommf_TMP && mv oommf_TMP/oommf oommf && rm -rf oommf_TMP 
